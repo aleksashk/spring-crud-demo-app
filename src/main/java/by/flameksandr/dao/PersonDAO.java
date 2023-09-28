@@ -4,21 +4,20 @@ import by.flameksandr.models.Person;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class PersonDAO {
     private static int PEOPLE_COUNT;
-    List<Person> people;
+    private List<Person> people;
 
     {
-        people = new ArrayList<>(Arrays.asList(
-                new Person(PEOPLE_COUNT++, "Tom"),
-                new Person(PEOPLE_COUNT++, "Jessica"),
-                new Person(PEOPLE_COUNT++, "Trevar"),
-                new Person(PEOPLE_COUNT++, "Kate")
-        ));
+        people = new ArrayList<>();
+
+        people.add(new Person(++PEOPLE_COUNT, "Tom", 24, "tom@mail.ru"));
+        people.add(new Person(++PEOPLE_COUNT, "Bob", 52, "bob@mail.ru"));
+        people.add(new Person(++PEOPLE_COUNT, "Mike", 18, "mike@yahoo.com"));
+        people.add(new Person(++PEOPLE_COUNT, "Katy", 34, "katy@gmail.com"));
     }
 
     public List<Person> index() {
@@ -26,10 +25,7 @@ public class PersonDAO {
     }
 
     public Person show(int id) {
-        return people.stream()
-                .filter(person -> person.getId() == id)
-                .findAny()
-                .orElse(null);
+        return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
     }
 
     public void save(Person person) {
@@ -41,6 +37,8 @@ public class PersonDAO {
         Person personToBeUpdated = show(id);
 
         personToBeUpdated.setName(updatedPerson.getName());
+        personToBeUpdated.setAge(updatedPerson.getAge());
+        personToBeUpdated.setEmail(updatedPerson.getEmail());
     }
 
     public void delete(int id) {
